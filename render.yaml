@@ -2,7 +2,7 @@ databases:
   - name: unt-db
     plan: free
     databaseName: unt_platform
-    user: postgres
+    user: untuser
 
 services:
   - type: web
