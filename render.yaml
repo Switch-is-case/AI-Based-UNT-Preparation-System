@@ -1,0 +1,51 @@
+databases:
+  - name: unt-db
+    plan: free
+    databaseName: unt_platform
+    user: postgres
+
+services:
+  - type: web
+    name: unt-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        value: https://your-frontend-url.vercel.app # Позже замените на реальный Vercel URL
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: DB_HOST
+        fromDatabase:
+          name: unt-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: unt-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: unt-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: unt-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: unt-db
+          property: database
+      - key: DIFY_API_URL
+        value: https://api.dify.ai/v1
+      - key: DIFY_API_KEY
+        value: app-o5EhuI8u77ParJBYC4jOw1Vg
+      - key: REDIS_HOST
+        value: "" # Пустое значение отключит кэш на проде (что нормально)
