@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "home": "Home",
+    "tests": "Tests",
+    "history": "History",
+    "leaderboard": "Leaderboard",
+    "aiTutor": "AI Tutor",
+    "learningPath": "Learning Path",
+    "admin": "Admin",
+    "about": "About",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "registerTitle": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "loginBtn": "Sign In",
+    "registerBtn": "Create Account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "loginError": "Invalid email or password",
+    "registerError": "Registration failed"
+  },
+  "home": {
+    "welcome": "Welcome to UNT Prep!",
+    "subtitle": "Personalized ENT preparation powered by AI",
+    "chooseSubject": "Choose a Subject",
+    "startTest": "Start Test",
+    "testsAvailable": "tests available",
+    "noTests": "No tests yet"
+  },
+  "test": {
+    "question": "Question",
+    "of": "of",
+    "iDontKnow": "I don't know",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit Test",
+    "timeLeft": "Time Left",
+    "confirmSubmit": "Are you sure you want to submit?"
+  },
+  "results": {
+    "title": "Test Results",
+    "score": "Your Score",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "skipped": "Skipped",
+    "percentage": "Percentage",
+    "details": "Detailed Review",
+    "yourAnswer": "Your Answer",
+    "correctAnswer": "Correct Answer",
+    "aiFeedback": "AI Recommendations",
+    "weakTopics": "Weak Topics",
+    "recommendations": "Recommendations",
+    "backHome": "Back to Home",
+    "retryTest": "Retry Test"
+  },
+  "history": {
+    "title": "Test History",
+    "noHistory": "You haven't taken any tests yet",
+    "date": "Date",
+    "test": "Test",
+    "score": "Score",
+    "viewResults": "View"
+  },
+  "leaderboard": {
+    "title": "Student Leaderboard",
+    "rank": "Rank",
+    "student": "Student",
+    "avgScore": "Avg Score",
+    "bestScore": "Best Score",
+    "attempts": "Attempts",
+    "noData": "No data yet"
+  },
+  "ai": {
+    "tutorTitle": "AI Tutor",
+    "placeholder": "Ask a question about ENT...",
+    "send": "Send",
+    "thinking": "AI is thinking...",
+    "learningPathTitle": "Learning Path",
+    "subject": "Subject",
+    "accuracy": "Accuracy",
+    "progress": "Progress",
+    "recommendation": "AI Recommendation",
+    "noData": "Complete tests to get recommendations"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "students": "Students",
+    "questions": "Questions",
+    "addQuestion": "Add Question",
+    "addTest": "Add Test",
+    "stats": "Statistics",
+    "totalStudents": "Total Students",
+    "totalTests": "Total Tests",
+    "totalQuestions": "Total Questions",
+    "totalAttempts": "Total Attempts"
+  },
+  "about": {
+    "title": "About UNT Prep",
+    "description": "A web platform for personalized preparation for the Unified National Testing using artificial intelligence technologies.",
+    "features": "Features",
+    "feature1": "Diagnostic testing with 'I don't know' button",
+    "feature2": "AI-powered error analysis and recommendations",
+    "feature3": "Personalized learning path",
+    "feature4": "Student leaderboard",
+    "feature5": "Multilingual interface (RU/KZ/EN)",
+    "tech": "Technologies"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "noResults": "Nothing found"
+  }
+}

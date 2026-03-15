@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "home": "Басты бет",
+    "tests": "Тесттер",
+    "history": "Тарих",
+    "leaderboard": "Рейтинг",
+    "aiTutor": "AI-Репетитор",
+    "learningPath": "Оқу жоспары",
+    "admin": "Әкімші",
+    "about": "Жоба туралы",
+    "login": "Кіру",
+    "register": "Тіркелу",
+    "logout": "Шығу",
+    "profile": "Профиль"
+  },
+  "auth": {
+    "loginTitle": "Жүйеге кіру",
+    "registerTitle": "Тіркелу",
+    "email": "Электрондық пошта",
+    "password": "Құпиясөз",
+    "username": "Пайдаланушы аты",
+    "loginBtn": "Кіру",
+    "registerBtn": "Тіркелу",
+    "noAccount": "Аккаунтыңыз жоқ па?",
+    "hasAccount": "Аккаунтыңыз бар ма?",
+    "loginError": "Қате email немесе құпиясөз",
+    "registerError": "Тіркелу қатесі"
+  },
+  "home": {
+    "welcome": "UNT Prep-ке қош келдіңіз!",
+    "subtitle": "AI көмегімен ҰБТ-ға дайындық",
+    "chooseSubject": "Пәнді таңдаңыз",
+    "startTest": "Тестті бастау",
+    "testsAvailable": "тест қолжетімді",
+    "noTests": "Тесттер әлі жоқ"
+  },
+  "test": {
+    "question": "Сұрақ",
+    "of": "ішінен",
+    "iDontKnow": "Мен білмеймін",
+    "next": "Келесі",
+    "previous": "Алдыңғы",
+    "submit": "Тестті аяқтау",
+    "timeLeft": "Қалған уақыт",
+    "confirmSubmit": "Тестті аяқтағыңыз келе ме?"
+  },
+  "results": {
+    "title": "Тест нәтижелері",
+    "score": "Сіздің нәтижеңіз",
+    "correct": "Дұрыс",
+    "wrong": "Қате",
+    "skipped": "Өткізілген",
+    "percentage": "Пайыз",
+    "details": "Толық талдау",
+    "yourAnswer": "Сіздің жауабыңыз",
+    "correctAnswer": "Дұрыс жауап",
+    "aiFeedback": "AI ұсыныстары",
+    "weakTopics": "Әлсіз тақырыптар",
+    "recommendations": "Ұсыныстар",
+    "backHome": "Басты бетке",
+    "retryTest": "Қайта тапсыру"
+  },
+  "history": {
+    "title": "Тестілеу тарихы",
+    "noHistory": "Сіз әлі тест тапсырмадыңыз",
+    "date": "Күні",
+    "test": "Тест",
+    "score": "Нәтиже",
+    "viewResults": "Қарау"
+  },
+  "leaderboard": {
+    "title": "Студенттер рейтингі",
+    "rank": "Орын",
+    "student": "Студент",
+    "avgScore": "Орташа балл",
+    "bestScore": "Ең жақсы балл",
+    "attempts": "Әрекеттер",
+    "noData": "Мәліметтер әлі жоқ"
+  },
+  "ai": {
+    "tutorTitle": "AI-Репетитор",
+    "placeholder": "ҰБТ бойынша сұрақ қойыңыз...",
+    "send": "Жіберу",
+    "thinking": "AI ойланып жатыр...",
+    "learningPathTitle": "Оқу жоспары",
+    "subject": "Пән",
+    "accuracy": "Дәлдік",
+    "progress": "Үлгерім",
+    "recommendation": "AI ұсынысы",
+    "noData": "Ұсыныстар алу үшін тесттерді тапсырыңыз"
+  },
+  "admin": {
+    "title": "Әкімші панелі",
+    "students": "Студенттер",
+    "questions": "Сұрақтар",
+    "addQuestion": "Сұрақ қосу",
+    "addTest": "Тест қосу",
+    "stats": "Статистика",
+    "totalStudents": "Барлық студенттер",
+    "totalTests": "Барлық тесттер",
+    "totalQuestions": "Барлық сұрақтар",
+    "totalAttempts": "Барлық әрекеттер"
+  },
+  "about": {
+    "title": "UNT Prep жобасы туралы",
+    "description": "Жасанды интеллект технологияларын пайдалана отырып, Ұлттық бірыңғай тестілеуге дайындалуға арналған веб-платформа.",
+    "features": "Мүмкіндіктер",
+    "feature1": "«Мен білмеймін» батырмасы бар диагностикалық тестілеу",
+    "feature2": "Қателерді AI талдауы және ұсыныстар",
+    "feature3": "Жеке оқу жоспары",
+    "feature4": "Студенттер рейтингі",
+    "feature5": "Көптілді интерфейс (RU/KZ/EN)",
+    "tech": "Технологиялар"
+  },
+  "common": {
+    "loading": "Жүктелуде...",
+    "error": "Қате орын алды",
+    "save": "Сақтау",
+    "cancel": "Бас тарту",
+    "delete": "Жою",
+    "edit": "Өңдеу",
+    "search": "Іздеу",
+    "noResults": "Ештеңе табылмады"
+  }
+}
