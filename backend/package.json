@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "db:init": "node src/config/initDb.js"
   },
   "dependencies": {

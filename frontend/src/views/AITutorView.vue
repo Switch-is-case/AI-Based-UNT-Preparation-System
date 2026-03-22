@@ -1,11 +1,9 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/auth'
 import apiClient from '@/api/client'
 
 const { t } = useI18n()
-const auth = useAuthStore()
 
 const messages = ref([])
 const input = ref('')
@@ -25,7 +23,7 @@ async function sendMessage() {
   try {
     const { data } = await apiClient.post('/ai/chat', { message: userMsg })
     messages.value.push({ role: 'ai', text: data.answer })
-  } catch (err) {
+  } catch {
     messages.value.push({ role: 'ai', text: t('common.error') })
   } finally {
     loading.value = false
