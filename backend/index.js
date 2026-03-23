@@ -8,6 +8,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const testRoutes = require('./src/routes/testRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const aiRoutes = require('./src/routes/aiRoutes');
+const initDb = require('./src/config/initDb');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -72,9 +73,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// ── Start Server ──
-app.listen(port, () => {
-  console.log(`✅ UNT Backend running on http://localhost:${port}`);
+// ── Initialize DB & Start Server ──
+initDb().then(() => {
+  app.listen(port, () => {
+    console.log(`✅ UNT Backend running on http://localhost:${port}`);
+  });
 });
 
 module.exports = app;

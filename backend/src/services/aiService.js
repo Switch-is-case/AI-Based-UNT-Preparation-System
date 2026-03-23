@@ -14,11 +14,15 @@ async function chatWithAI(message, userId, language = 'ru') {
   }
 
   try {
+    const langName = language === 'kk' ? 'қазақ тілінде' : language === 'en' ? 'English' : 'русском языке';
+    // Append a forceful system instruction to the user's message
+    const formattedQuery = `[System instruction: You must respond in ${langName}]\n\nUser: ${message}`;
+
     const response = await axios.post(
       `${DIFY_API_URL}/chat-messages`,
       {
         inputs: { language },
-        query: message,
+        query: formattedQuery,
         response_mode: 'blocking',
         user: `user_${userId}`
       },
@@ -33,7 +37,11 @@ async function chatWithAI(message, userId, language = 'ru') {
 
     return { answer: response.data.answer || getFallbackResponse(language) };
   } catch (err) {
-    console.error('Dify API error:', err.message);
+    if (err.response) {
+      console.error('Dify API error:', err.response.status, err.response.data);
+    } else {
+      console.error('Dify API error:', err.message);
+    }
     return { answer: getFallbackResponse(language) };
   }
 }
