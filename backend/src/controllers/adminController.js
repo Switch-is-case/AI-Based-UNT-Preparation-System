@@ -112,8 +112,8 @@ async function createQuestion(req, res) {
       `INSERT INTO questions (test_id, text_ru, text_kk, text_en, type, difficulty, explanation_ru, explanation_kk, explanation_en, order_num, variant_number)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
       [testId, textRu, textKk || null, textEn || null, type || 'single', difficulty || 'medium',
-       explanationRu || null, explanationKk || null, explanationEn || null,
-       orderNum || 0, variantNumber || null]
+        explanationRu || null, explanationKk || null, explanationEn || null,
+        orderNum || 0, variantNumber || null]
     );
     const questionId = qResult.rows[0].id;
 

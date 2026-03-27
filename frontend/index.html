@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="ru">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <title>UNT Prep — Подготовка к ЕНТ с ИИ</title>
+    <meta name="description" content="Персонализированная подготовка к Единому национальному тестированию (ЕНТ) с использованием искусственного интеллекта. Диагностика, план обучения, ИИ-репетитор.">
+    <meta name="theme-color" content="#4361ee">
   </head>
   <body>
+    <!-- Apply theme before app loads to prevent flash -->
+    <script>
+      (function() {
+        try {
+          var isDark = localStorage.getItem('theme') === 'dark';
+          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        } catch (e) {}
+      })();
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>

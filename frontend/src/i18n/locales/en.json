@@ -11,7 +11,9 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "profile": "Profile"
+    "profile": "Profile",
+    "darkTheme": "Dark Theme",
+    "lightTheme": "Light Theme"
   },
   "auth": {
     "loginTitle": "Sign In",
@@ -32,7 +34,17 @@
     "chooseSubject": "Choose a Subject",
     "startTest": "Start Test",
     "testsAvailable": "tests available",
-    "noTests": "No tests yet"
+    "noTests": "No tests yet",
+    "mandatory": "Mandatory Subjects",
+    "mandatoryDesc": "Common for all tracks",
+    "profile": "Profile Subjects",
+    "profileDesc": "Based on your track",
+    "progress": "Progress",
+    "levelBeginner": "Beginner",
+    "levelLearner": "Learner",
+    "levelAdvanced": "Advanced",
+    "levelMaster": "Master",
+    "noSubjects": "No subjects added yet"
   },
   "test": {
     "question": "Question",
@@ -58,7 +70,19 @@
     "weakTopics": "Weak Topics",
     "recommendations": "Recommendations",
     "backHome": "Back to Home",
-    "retryTest": "Retry Test"
+    "retryTest": "Retry Test",
+    "errorAnalysis": "Error Analysis",
+    "tips": "Tips & Tricks",
+    "theory": "Theory Review",
+    "reviewTheory": "Review Theory",
+    "saveCard": "Save",
+    "saved": "Saved",
+    "aiAnalyzing": "AI is analyzing your answers...",
+    "aiAnalyzingHint": "This may take up to 30 seconds",
+    "aiTimeout": "AI analysis is taking longer than usual",
+    "aiError": "Failed to get AI analysis",
+    "aiRetry": "Request analysis again",
+    "aiRequest": "Get AI Analysis"
   },
   "history": {
     "title": "Test History",
@@ -75,7 +99,10 @@
     "avgScore": "Avg Score",
     "bestScore": "Best Score",
     "attempts": "Attempts",
-    "noData": "No data yet"
+    "noData": "No data yet",
+    "emptyTitle": "It's empty here!",
+    "emptyText": "Take your first test to make it to the top!",
+    "startFirst": "Take First Test"
   },
   "ai": {
     "tutorTitle": "AI Tutor",
@@ -87,7 +114,13 @@
     "accuracy": "Accuracy",
     "progress": "Progress",
     "recommendation": "AI Recommendation",
-    "noData": "Complete tests to get recommendations"
+    "noData": "Complete tests to get recommendations",
+    "roadmapTitle": "Your Path to Success",
+    "level": "Level",
+    "daysUntilENT": "days until ENT",
+    "entDate": "Estimated ENT date",
+    "noDataTitle": "Start your journey!",
+    "noDataText": "Complete tests to get personalized recommendations"
   },
   "admin": {
     "title": "Admin Panel",
