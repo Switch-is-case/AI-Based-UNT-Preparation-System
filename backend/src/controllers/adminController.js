@@ -239,7 +239,42 @@ async function getStats(req, res) {
   }
 }
 
+/**
+ * DELETE /api/admin/cleanup-duplicates — remove duplicate questions (TEMPORARY)
+ * Keeps the question with the smallest id for each (text_ru, test_id) pair.
+ */
+async function cleanupDuplicates(req, res) {
+  try {
+    // First, find how many duplicates exist
+    const countResult = await pool.query(`
+      SELECT COUNT(*) AS total FROM questions
+      WHERE id NOT IN (
+        SELECT MIN(id) FROM questions GROUP BY text_ru, test_id
+      )
+    `);
+    const duplicateCount = parseInt(countResult.rows[0].total);
+
+    if (duplicateCount === 0) {
+      return res.json({ message: 'No duplicates found', deleted: 0 });
+    }
+
+    // Delete duplicates (CASCADE will remove related options)
+    const deleteResult = await pool.query(`
+      DELETE FROM questions
+      WHERE id NOT IN (
+        SELECT MIN(id) FROM questions GROUP BY text_ru, test_id
+      )
+    `);
+
+    invalidateCache('/api/tests');
+    res.json({ message: `Duplicates removed`, deleted: deleteResult.rowCount });
+  } catch (err) {
+    console.error('Cleanup duplicates error:', err);
+    res.status(500).json({ error: 'Failed to cleanup duplicates' });
+  }
+}
+
 module.exports = {
   getStudents, getSubjects, getTests, getQuestions, createQuestion, updateQuestion, deleteQuestion,
-  createTest, deleteTest, getStats
+  createTest, deleteTest, getStats, cleanupDuplicates
 };

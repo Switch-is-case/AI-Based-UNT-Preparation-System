@@ -3,7 +3,7 @@ const router = express.Router();
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const {
   getStudents, getSubjects, getTests, getQuestions, createQuestion, updateQuestion, deleteQuestion,
-  createTest, deleteTest, getStats
+  createTest, deleteTest, getStats, cleanupDuplicates
 } = require('../controllers/adminController');
 
 // All admin routes require authentication + admin role
@@ -19,5 +19,6 @@ router.put('/questions/:id', updateQuestion);
 router.delete('/questions/:id', deleteQuestion);
 router.post('/tests', createTest);
 router.delete('/tests/:id', deleteTest);
+router.delete('/cleanup-duplicates', cleanupDuplicates);
 
 module.exports = router;
