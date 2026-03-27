@@ -16,12 +16,12 @@
   --dark: #1a1a2e;
   --darker: #16213e;
   --light: #f8f9fa;
-  --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --bg-gradient: #ffffff;
+  --card-bg: rgba(0, 0, 0, 0.03);
+  --card-border: rgba(0, 0, 0, 0.1);
+  --text-primary: #1a1a2e;
+  --text-secondary: rgba(0, 0, 0, 0.55);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   --radius: 16px;
   --radius-sm: 8px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,10 +46,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--dark);
+  background: #f0f0f0;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: #5bb8f5;
   border-radius: 3px;
 }
 
@@ -65,29 +65,28 @@ body {
 
 .glass-card:hover {
   transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: 0 12px 40px rgba(67, 97, 238, 0.2);
+  border-color: #5bb8f5;
+  box-shadow: 0 12px 40px rgba(91, 184, 245, 0.15);
 }
 
 /* ── Navbar ── */
 .navbar-custom {
-  background: rgba(26, 26, 46, 0.95) !important;
+  background: linear-gradient(135deg, #4fc3f7, #29b6f6, #03a9f4) !important;
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--card-border);
+  border-bottom: none;
   padding: 0.75rem 0;
+  box-shadow: 0 2px 12px rgba(3, 169, 244, 0.3);
 }
 
 .navbar-custom .navbar-brand {
   font-weight: 800;
   font-size: 1.4rem;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .navbar-custom .nav-link {
-  color: var(--text-secondary) !important;
+  color: rgba(255, 255, 255, 0.85) !important;
   font-weight: 500;
   transition: var(--transition);
   padding: 0.5rem 1rem !important;
@@ -97,13 +96,13 @@ body {
 
 .navbar-custom .nav-link:hover,
 .navbar-custom .nav-link.router-link-active {
-  color: var(--text-primary) !important;
-  background: rgba(67, 97, 238, 0.15);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ── Buttons ── */
 .btn-primary-custom {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #4fc3f7, #03a9f4);
   border: none;
   color: white;
   padding: 0.7rem 1.8rem;
@@ -115,7 +114,7 @@ body {
 
 .btn-primary-custom:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+  box-shadow: 0 8px 25px rgba(3, 169, 244, 0.4);
   color: white;
 }
 
@@ -135,10 +134,25 @@ body {
   color: white;
 }
 
+.btn-skip-active {
+  background: rgba(255, 193, 7, 0.15);
+  border: 2px solid #ffc107;
+  color: #ffc107;
+  padding: 0.7rem 1.8rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-skip-active:hover {
+  background: rgba(255, 193, 7, 0.25);
+  color: #ffc107;
+}
+
 .btn-outline-glass {
   background: transparent;
-  border: 1px solid var(--card-border);
-  color: var(--text-primary);
+  border: 1px solid #4fc3f7;
+  color: #03a9f4;
   padding: 0.5rem 1.2rem;
   border-radius: var(--radius-sm);
   font-weight: 500;
@@ -146,9 +160,21 @@ body {
 }
 
 .btn-outline-glass:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary);
-  color: white;
+  background: rgba(3, 169, 244, 0.1);
+  border-color: #03a9f4;
+  color: #0288d1;
+}
+
+/* Keep navbar buttons white on blue background */
+.navbar-custom .btn-outline-glass {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+.navbar-custom .btn-outline-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 /* ── Form Elements ── */
@@ -184,7 +210,7 @@ body {
   font-size: 2rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.7));
+  background: linear-gradient(135deg, #1a1a2e, #333);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -304,7 +330,7 @@ body {
 }
 
 .chat-bubble-user {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #4fc3f7, #03a9f4);
   color: white;
   margin-left: auto;
   border-bottom-right-radius: 4px;

@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS questions (
     explanation_kk TEXT,
     explanation_en TEXT,
     order_num INTEGER DEFAULT 0,
+    variant_number VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -174,11 +175,12 @@ GROUP BY ta.user_id, s.id, s.name_ru;
 -- Default admin user (password: admin123)
 -- Hash will be generated at runtime, this is a placeholder
 INSERT INTO users (username, email, password_hash, role) VALUES
-    ('admin', 'admin@unt.kz', '$argon2id$v=19$m=65536,t=3,p=4$placeholder$hash', 'admin')
+    ('admin', 'admin@unt.kz', '$argon2id$v=19$m=65536,t=3,p=4$0h9nEBdSTRWnKdHe6YqpxA$cPBmbXAyz1TCXjLpF9/xTc7JmfO1yQc45JFMIIX/BZ4', 'admin')
 ON CONFLICT (username) DO NOTHING;
 
 -- Subjects
-INSERT INTO subjects (name_ru, name_kk, name_en, icon) VALUES
+INSERT INTO subjects (name_ru, name_kk, name_en, icon)
+SELECT * FROM (VALUES
     ('Математическая грамотность', 'Математикалық сауаттылық', 'Mathematical Literacy', '📐'),
     ('Грамотность чтения', 'Оқу сауаттылығы', 'Reading Literacy', '📖'),
     ('История Казахстана', 'Қазақстан тарихы', 'History of Kazakhstan', '🏛️'),
@@ -189,4 +191,21 @@ INSERT INTO subjects (name_ru, name_kk, name_en, icon) VALUES
     ('Английский язык', 'Ағылшын тілі', 'English Language', '🇬🇧'),
     ('Информатика', 'Информатика', 'Computer Science', '💻'),
     ('География', 'География', 'Geography', '🌍')
-ON CONFLICT DO NOTHING;
+) AS t(name_ru, name_kk, name_en, icon)
+WHERE NOT EXISTS (SELECT 1 FROM subjects LIMIT 1);
+
+-- Tests (one per subject, skip if any tests already exist)
+INSERT INTO tests (subject_id, title_ru, title_kk, title_en)
+SELECT * FROM (VALUES
+    (1, 'Тест по математической грамотности', 'Математикалық сауаттылық тесті', 'Mathematical Literacy Test'),
+    (2, 'Тест по грамотности чтения', 'Оқу сауаттылығы тесті', 'Reading Literacy Test'),
+    (3, 'Тест по истории Казахстана', 'Қазақстан тарихы тесті', 'History of Kazakhstan Test'),
+    (4, 'Тест по математике', 'Математика тесті', 'Mathematics Test'),
+    (5, 'Тест по физике', 'Физика тесті', 'Physics Test'),
+    (6, 'Тест по химии', 'Химия тесті', 'Chemistry Test'),
+    (7, 'Тест по биологии', 'Биология тесті', 'Biology Test'),
+    (8, 'Тест по английскому языку', 'Ағылшын тілі тесті', 'English Language Test'),
+    (9, 'Тест по информатике', 'Информатика тесті', 'Computer Science Test'),
+    (10, 'Тест по географии', 'География тесті', 'Geography Test')
+) AS t(subject_id, title_ru, title_kk, title_en)
+WHERE NOT EXISTS (SELECT 1 FROM tests LIMIT 1);

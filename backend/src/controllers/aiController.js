@@ -85,5 +85,54 @@ async function explain(req, res) {
     res.status(500).json({ error: 'Failed to explain question' });
   }
 }
+/**
+ * POST /api/ai/analyze/:attemptId — trigger AI analysis on demand
+ */
+async function analyzeAttempt(req, res) {
+  try {
+    const { attemptId } = req.params;
+    const userId = req.user.id;
+    const language = req.headers['accept-language'] || 'ru';
 
-module.exports = { chat, learningPath, explain };
+    // Check if feedback already exists
+    const existing = await pool.query(
+      'SELECT id FROM ai_feedbacks WHERE attempt_id = $1 LIMIT 1',
+      [attemptId]
+    );
+    if (existing.rows.length > 0) {
+      return res.json({ message: 'Analysis already exists' });
+    }
+
+    // Get the attempt and wrong/skipped answers
+    const attempt = await pool.query(
+      'SELECT test_id FROM test_attempts WHERE id = $1 AND user_id = $2',
+      [attemptId, userId]
+    );
+    if (attempt.rows.length === 0) {
+      return res.status(404).json({ error: 'Attempt not found' });
+    }
+
+    const wrongAnswers = await pool.query(
+      `SELECT question_id AS "questionId", selected_option_id AS "selectedOptionId", is_skipped AS "isSkipped"
+       FROM question_answers WHERE attempt_id = $1 AND (is_correct = false OR is_skipped = true)`,
+      [attemptId]
+    );
+
+    if (wrongAnswers.rows.length === 0) {
+      return res.json({ message: 'No wrong answers to analyze' });
+    }
+
+    // Trigger analysis asynchronously
+    aiService.analyzeTest(
+      parseInt(attemptId), userId, attempt.rows[0].test_id,
+      wrongAnswers.rows, language
+    ).catch(err => console.error('AI analysis error:', err.message));
+
+    res.json({ message: 'Analysis started' });
+  } catch (err) {
+    console.error('Analyze attempt error:', err);
+    res.status(500).json({ error: 'Failed to start analysis' });
+  }
+}
+
+module.exports = { chat, learningPath, explain, analyzeAttempt };

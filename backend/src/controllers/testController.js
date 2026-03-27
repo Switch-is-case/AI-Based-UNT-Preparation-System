@@ -152,6 +152,7 @@ async function submitTest(req, res) {
     for (const a of answers) {
       if (a.isSkipped) {
         skippedCount++;
+        wrongAnswers.push(a);
         continue;
       }
       // Check if selected option is correct

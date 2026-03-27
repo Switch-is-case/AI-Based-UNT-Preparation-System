@@ -63,9 +63,6 @@ function selectOption(questionId, optionId) {
 
 function skipQuestion(questionId) {
   answers.value[questionId] = { isSkipped: true, selectedOptionId: null }
-  if (currentIndex.value < questions.value.length - 1) {
-    currentIndex.value++
-  }
 }
 
 async function handleSubmit() {
@@ -155,8 +152,10 @@ async function handleSubmit() {
         </div>
 
         <!-- I Don't Know Button -->
-        <button class="btn btn-accent w-100 mt-3" @click="skipQuestion(currentQuestion.id)">
-          🤷 {{ t('test.iDontKnow') }}
+        <button class="btn w-100 mt-3"
+                :class="answers[currentQuestion.id]?.isSkipped ? 'btn-skip-active' : 'btn-accent'"
+                @click="skipQuestion(currentQuestion.id)">
+          {{ answers[currentQuestion.id]?.isSkipped ? '✓ ' + t('test.iDontKnow') : '🤷 ' + t('test.iDontKnow') }}
         </button>
       </div>
 

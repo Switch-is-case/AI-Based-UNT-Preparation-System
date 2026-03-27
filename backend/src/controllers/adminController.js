@@ -30,13 +30,49 @@ async function getStudents(req, res) {
 }
 
 /**
+ * GET /api/admin/subjects — list all subjects
+ */
+async function getSubjects(req, res) {
+  try {
+    const result = await pool.query(
+      'SELECT id, name_ru, name_kk, name_en, icon FROM subjects WHERE is_active = true ORDER BY id'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Get subjects error:', err);
+    res.status(500).json({ error: 'Failed to fetch subjects' });
+  }
+}
+
+/**
+ * GET /api/admin/tests — list tests, optionally filtered by subject
+ */
+async function getTests(req, res) {
+  try {
+    const { subjectId } = req.query;
+    let query = 'SELECT id, subject_id, title_ru, title_kk, title_en FROM tests WHERE is_active = true';
+    const params = [];
+    if (subjectId) {
+      query += ' AND subject_id = $1';
+      params.push(subjectId);
+    }
+    query += ' ORDER BY id';
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Get tests error:', err);
+    res.status(500).json({ error: 'Failed to fetch tests' });
+  }
+}
+
+/**
  * GET /api/admin/questions — list all questions
  */
 async function getQuestions(req, res) {
   try {
     const { testId } = req.query;
     let query = `
-      SELECT q.id, q.text_ru, q.text_kk, q.text_en, q.type, q.difficulty, q.order_num,
+      SELECT q.id, q.text_ru, q.text_kk, q.text_en, q.type, q.difficulty, q.order_num, q.variant_number,
              t.title_ru AS test_title, s.name_ru AS subject_name
       FROM questions q
       JOIN tests t ON q.test_id = t.id
@@ -64,7 +100,7 @@ async function getQuestions(req, res) {
 async function createQuestion(req, res) {
   const client = await pool.connect();
   try {
-    const { testId, textRu, textKk, textEn, type, difficulty, explanationRu, explanationKk, explanationEn, options } = req.body;
+    const { testId, textRu, textKk, textEn, type, difficulty, explanationRu, explanationKk, explanationEn, orderNum, variantNumber, options } = req.body;
 
     if (!testId || !textRu || !options || options.length < 2) {
       return res.status(400).json({ error: 'testId, textRu, and at least 2 options are required' });
@@ -73,10 +109,11 @@ async function createQuestion(req, res) {
     await client.query('BEGIN');
 
     const qResult = await client.query(
-      `INSERT INTO questions (test_id, text_ru, text_kk, text_en, type, difficulty, explanation_ru, explanation_kk, explanation_en)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+      `INSERT INTO questions (test_id, text_ru, text_kk, text_en, type, difficulty, explanation_ru, explanation_kk, explanation_en, order_num, variant_number)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
       [testId, textRu, textKk || null, textEn || null, type || 'single', difficulty || 'medium',
-       explanationRu || null, explanationKk || null, explanationEn || null]
+       explanationRu || null, explanationKk || null, explanationEn || null,
+       orderNum || 0, variantNumber || null]
     );
     const questionId = qResult.rows[0].id;
 
@@ -203,6 +240,6 @@ async function getStats(req, res) {
 }
 
 module.exports = {
-  getStudents, getQuestions, createQuestion, updateQuestion, deleteQuestion,
+  getStudents, getSubjects, getTests, getQuestions, createQuestion, updateQuestion, deleteQuestion,
   createTest, deleteTest, getStats
 };

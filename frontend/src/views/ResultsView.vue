@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import apiClient from '@/api/client'
@@ -9,6 +9,9 @@ const route = useRoute()
 
 const data = ref(null)
 const loading = ref(true)
+const aiLoading = ref(false)
+const aiError = ref('')
+let pollTimer = null
 
 const scoreClass = computed(() => {
   if (!data.value) return ''
@@ -19,16 +22,68 @@ const scoreClass = computed(() => {
   return 'score-poor'
 })
 
+// Questions that were wrong or skipped
+const problemQuestions = computed(() => {
+  if (!data.value) return []
+  return data.value.answers.filter(a => !a.is_correct)
+})
+
 onMounted(async () => {
   try {
     const res = await apiClient.get(`/tests/results/${route.params.attemptId}`)
     data.value = res.data
+
+    // If there are problem questions but no AI feedback yet, start polling
+    if (problemQuestions.value.length > 0 && !data.value.aiFeedback) {
+      aiLoading.value = true
+      startPolling()
+    }
   } catch (err) {
     console.error('Load results error:', err)
   } finally {
     loading.value = false
   }
 })
+
+onUnmounted(() => {
+  if (pollTimer) clearInterval(pollTimer)
+})
+
+function startPolling() {
+  let attempts = 0
+  const maxAttempts = 20 // poll for up to ~60 seconds (every 3s)
+
+  pollTimer = setInterval(async () => {
+    attempts++
+    try {
+      const res = await apiClient.get(`/tests/results/${route.params.attemptId}`)
+      if (res.data.aiFeedback) {
+        data.value.aiFeedback = res.data.aiFeedback
+        aiLoading.value = false
+        clearInterval(pollTimer)
+      } else if (attempts >= maxAttempts) {
+        aiLoading.value = false
+        aiError.value = 'timeout'
+        clearInterval(pollTimer)
+      }
+    } catch (err) {
+      console.error('Poll error:', err)
+    }
+  }, 3000)
+}
+
+async function requestAiAnalysis() {
+  aiLoading.value = true
+  aiError.value = ''
+  try {
+    await apiClient.post(`/ai/analyze/${route.params.attemptId}`)
+    startPolling()
+  } catch (err) {
+    console.error('Request AI analysis error:', err)
+    aiError.value = 'error'
+    aiLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -74,16 +129,48 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- AI Feedback -->
-      <div v-if="data.aiFeedback" class="glass-card p-4 mb-4 fade-in-up fade-in-up-delay-1">
+      <!-- AI Feedback Section -->
+      <div v-if="problemQuestions.length > 0" class="glass-card p-4 mb-4 fade-in-up fade-in-up-delay-1">
         <h4 class="fw-bold mb-3">🤖 {{ t('results.aiFeedback') }}</h4>
-        <div v-if="data.aiFeedback.weak_topics" class="mb-3">
-          <h6 class="text-warning">{{ t('results.weakTopics') }}</h6>
-          <p class="text-secondary" style="white-space: pre-line;">{{ data.aiFeedback.weak_topics }}</p>
+
+        <!-- Loading state -->
+        <div v-if="aiLoading" class="text-center py-4">
+          <div class="spinner-border text-primary mb-3"></div>
+          <p class="text-secondary mb-1">ИИ анализирует ваши ответы...</p>
+          <small class="text-secondary">Это может занять до 30 секунд</small>
         </div>
-        <div v-if="data.aiFeedback.recommendations">
-          <h6 class="text-info">{{ t('results.recommendations') }}</h6>
-          <p class="text-secondary" style="white-space: pre-line;">{{ data.aiFeedback.recommendations }}</p>
+
+        <!-- Error / Retry -->
+        <div v-else-if="aiError && !data.aiFeedback" class="text-center py-3">
+          <p class="text-secondary mb-3">
+            {{ aiError === 'timeout' ? 'ИИ-анализ занимает больше времени, чем обычно' : 'Не удалось получить анализ от ИИ' }}
+          </p>
+          <button class="btn btn-primary-custom btn-sm" @click="requestAiAnalysis">
+            🔄 Запросить анализ снова
+          </button>
+        </div>
+
+        <!-- AI Feedback Content -->
+        <div v-else-if="data.aiFeedback">
+          <div v-if="data.aiFeedback.weak_topics" class="mb-4">
+            <h5 class="mb-3" style="color: #ffc107;">📝 Разбор ошибок</h5>
+            <div class="ai-content p-3 rounded-3" style="background: rgba(255, 193, 7, 0.08); border: 1px solid rgba(255, 193, 7, 0.2);">
+              <p style="white-space: pre-line; line-height: 1.8; margin: 0;">{{ data.aiFeedback.weak_topics }}</p>
+            </div>
+          </div>
+          <div v-if="data.aiFeedback.recommendations">
+            <h5 class="mb-3" style="color: #4cc9f0;">📚 План обучения</h5>
+            <div class="ai-content p-3 rounded-3" style="background: rgba(76, 201, 240, 0.08); border: 1px solid rgba(76, 201, 240, 0.2);">
+              <p style="white-space: pre-line; line-height: 1.8; margin: 0;">{{ data.aiFeedback.recommendations }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- No AI key configured -->
+        <div v-else class="text-center py-3">
+          <button class="btn btn-primary-custom btn-sm" @click="requestAiAnalysis">
+            🤖 Получить анализ от ИИ
+          </button>
         </div>
       </div>
 
