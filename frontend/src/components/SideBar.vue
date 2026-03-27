@@ -133,10 +133,10 @@ const navItems = [
         <RouterLink
           to="/admin"
           class="sidebar-nav-item"
-          :class="{ active: route.path === '/admin' }"
+          :class="{ active: route.path.startsWith('/admin'), 'admin-pulse': route.path.startsWith('/admin') }"
           @click="closeMobile"
         >
-          <span class="sidebar-nav-icon">⚙️</span>
+          <span class="sidebar-nav-icon text-warning">⚙️</span>
           <span class="sidebar-nav-text">{{ t('nav.admin') }}</span>
         </RouterLink>
       </template>

@@ -16,11 +16,15 @@ function getLangSuffix(req) {
 async function getStudents(req, res) {
   try {
     const result = await pool.query(`
-      SELECT id, username, email, language, created_at,
-             (SELECT COUNT(*) FROM test_attempts ta WHERE ta.user_id = users.id) AS attempts_count
+      SELECT users.id, users.username, users.email, users.language, users.created_at,
+             COUNT(ta.id) AS attempts_count,
+             ROUND(AVG(ta.score * 100.0 / NULLIF(ta.total_questions, 0))) AS avg_score,
+             MAX(ta.finished_at) AS last_active_at
       FROM users
-      WHERE role = 'student'
-      ORDER BY created_at DESC
+      LEFT JOIN test_attempts ta ON ta.user_id = users.id
+      WHERE users.role = 'student'
+      GROUP BY users.id
+      ORDER BY users.created_at DESC
     `);
     res.json(result.rows);
   } catch (err) {
@@ -220,18 +224,26 @@ async function deleteTest(req, res) {
  */
 async function getStats(req, res) {
   try {
-    const [users, tests, questions, attempts] = await Promise.all([
+    const [users, tests, questions, attempts, recent] = await Promise.all([
       pool.query("SELECT COUNT(*) FROM users WHERE role = 'student'"),
       pool.query('SELECT COUNT(*) FROM tests WHERE is_active = true'),
       pool.query('SELECT COUNT(*) FROM questions'),
-      pool.query('SELECT COUNT(*) FROM test_attempts')
+      pool.query('SELECT COUNT(*) FROM test_attempts'),
+      pool.query(`
+        SELECT TO_CHAR(finished_at, 'YYYY-MM-DD') as date, COUNT(*) as count 
+        FROM test_attempts 
+        WHERE finished_at >= NOW() - INTERVAL '7 days' 
+        GROUP BY TO_CHAR(finished_at, 'YYYY-MM-DD')
+        ORDER BY date ASC
+      `)
     ]);
 
     res.json({
       studentsCount: parseInt(users.rows[0].count),
       testsCount: parseInt(tests.rows[0].count),
       questionsCount: parseInt(questions.rows[0].count),
-      attemptsCount: parseInt(attempts.rows[0].count)
+      attemptsCount: parseInt(attempts.rows[0].count),
+      recentActivity: recent.rows.map(r => ({ date: r.date, count: parseInt(r.count) }))
     });
   } catch (err) {
     console.error('Get stats error:', err);
