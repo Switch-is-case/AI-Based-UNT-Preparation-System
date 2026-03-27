@@ -92,7 +92,7 @@ function getLevelLabel(index, total) {
     <div v-else>
       <div class="row g-4">
         <!-- Left: Timeline Roadmap -->
-        <div class="col-lg-8 fade-in-up fade-in-up-delay-1">
+        <div class="col-lg-8 col-xl-9 fade-in-up fade-in-up-delay-1">
           <div class="glass-card p-4">
             <h5 class="fw-bold mb-4 d-flex align-items-center gap-2">
               <span>🗺️</span> {{ t('ai.roadmapTitle') }}
@@ -140,7 +140,7 @@ function getLevelLabel(index, total) {
         </div>
 
         <!-- Right: Stats + AI Recommendation -->
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-xl-3">
           <!-- Quick Stats -->
           <div class="glass-card p-4 mb-4 fade-in-up fade-in-up-delay-2">
             <h6 class="fw-bold mb-3">📊 {{ t('ai.progress') }}</h6>

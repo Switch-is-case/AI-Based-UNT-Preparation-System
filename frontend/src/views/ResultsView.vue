@@ -144,7 +144,7 @@ function isCardSaved(cardId) {
         <div class="row g-3 justify-content-center" style="max-width: 500px; margin: 0 auto;">
           <div class="col-4">
             <div class="glass-card p-3" style="border-top: 3px solid var(--success);">
-              <div class="fs-4 fw-bold text-success">{{ data.attempt.score }}</div>
+              <div class="fs-4 fw-bold score-excellent">{{ data.attempt.score }}</div>
               <small class="text-secondary" style="font-size: 0.75rem;">{{ t('results.correct') }}</small>
             </div>
           </div>

@@ -105,7 +105,7 @@ function getLevelInfo(progress) {
                   <div class="flex-grow-1 min-w-0">
                     <h5 class="fw-bold mb-1" style="font-size: 0.95rem;">{{ subject.name }}</h5>
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                      <span class="subject-badge mandatory">⭐ {{ t('home.mandatory') }}</span>
+                      <span class="text-secondary small fw-bold pe-2" style="letter-spacing: 0.5px;"><span style="color:var(--primary)">⭐</span> {{ t('home.mandatory') }}</span>
                       <span class="level-badge" :class="getLevelInfo(getProgress(subject)).cls">
                         {{ getLevelInfo(getProgress(subject)).icon }}
                         {{ t(getLevelInfo(getProgress(subject)).key) }}
@@ -171,7 +171,7 @@ function getLevelInfo(progress) {
                   <div class="flex-grow-1 min-w-0">
                     <h5 class="fw-bold mb-1" style="font-size: 0.95rem;">{{ subject.name }}</h5>
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                      <span class="subject-badge profile">🎯 {{ t('home.profile') }}</span>
+                      <span class="text-secondary small fw-bold pe-2" style="letter-spacing: 0.5px;"><span style="color:var(--success)">🎯</span> {{ t('home.profile') }}</span>
                       <span class="level-badge" :class="getLevelInfo(getProgress(subject)).cls">
                         {{ getLevelInfo(getProgress(subject)).icon }}
                         {{ t(getLevelInfo(getProgress(subject)).key) }}
@@ -200,9 +200,9 @@ function getLevelInfo(progress) {
                   </p>
                   <div v-for="test in getTestsForSubject(subject.id)" :key="test.id">
                     <RouterLink :to="`/test/${test.id}`"
-                                class="btn btn-outline-glass btn-sm w-100 d-flex justify-content-between align-items-center">
+                                class="btn btn-primary-custom btn-sm w-100 d-flex justify-content-between align-items-center">
                       <span style="font-size: 0.85rem;">{{ test.title }}</span>
-                      <span class="badge-glass" style="font-size: 0.7rem;">{{ test.question_count }} Q</span>
+                      <span class="badge bg-white text-dark" style="font-size: 0.7rem;">{{ test.question_count }} Q</span>
                     </RouterLink>
                   </div>
                   <div v-if="getTestsForSubject(subject.id).length === 0"

@@ -837,7 +837,7 @@ body {
 }
 
 /* ── Score Colors ── */
-.score-excellent { color: var(--success); }
+.score-excellent { color: #028a67; }
 .score-good { color: var(--primary); }
 .score-average { color: var(--warning); }
 .score-poor { color: var(--danger); }
@@ -1076,13 +1076,14 @@ body {
   background: var(--success);
   border-color: var(--success);
   color: #fff;
+  box-shadow: 0 0 15px rgba(6, 214, 160, 0.5);
 }
 
 .roadmap-dot.current {
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
-  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2), 0 0 15px rgba(67, 97, 238, 0.5);
 }
 
 .roadmap-dot.locked {
