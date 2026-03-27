@@ -131,7 +131,7 @@ function isCardSaved(cardId) {
                       :stroke-dashoffset="377 - (377 * scorePct / 100)"
                       style="transition: stroke-dashoffset 1.5s ease;"/>
             </svg>
-            <div class="display-5 fw-bold" :class="scoreClass" style="position: relative; z-index: 1;">
+            <div class="fw-bold" :class="scoreClass" style="position: relative; z-index: 1; font-size: 2.5rem; line-height: 1;">
               {{ scorePct }}%
             </div>
             <small class="text-secondary" style="position: relative; z-index: 1; font-size: 0.75rem;">
