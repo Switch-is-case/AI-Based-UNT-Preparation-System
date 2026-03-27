@@ -35,22 +35,25 @@ function formatDate(dateStr) {
 }
 
 // Sparkline SVG helper
-const sparklinePoints = computed(() => {
-  if (!stats.value || !stats.value.recentActivity || stats.value.recentActivity.length === 0) return ''
+const sparklineDots = computed(() => {
+  if (!stats.value || !stats.value.recentActivity || stats.value.recentActivity.length === 0) return []
   const acts = stats.value.recentActivity
   const max = Math.max(...acts.map(a => a.count), 1)
   const min = 0
-  
-  // Draw inside a 200x50 SVG box
   const width = 200
   const height = 50
-  const points = acts.map((a, i) => {
-    const x = (i / (acts.length - 1 || 1)) * width
-    const y = height - ((a.count - min) / (max - min) * height)
-    return `${x},${y}`
+  return acts.map((a, i) => {
+    return {
+      x: (i / (acts.length - 1 || 1)) * width,
+      y: height - ((a.count - min) / (max - min) * height),
+      count: a.count,
+      date: a.date
+    }
   })
-  
-  return points.join(' ')
+})
+
+const sparklinePoints = computed(() => {
+  return sparklineDots.value.map(d => `${d.x},${d.y}`).join(' ')
 })
 
 // Subjects & tests for the form dropdowns
@@ -274,6 +277,12 @@ function cancelDelete() {
               <h6 class="fw-bold mb-4">📈 Количество тестов по дням (За неделю)</h6>
               <div class="chart-container" style="height: 120px; position: relative;">
                 <svg viewBox="0 0 200 50" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: visible;">
+                  <!-- Grid Lines -->
+                  <line x1="0" y1="12.5" x2="200" y2="12.5" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                  <line x1="0" y1="25" x2="200" y2="25" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                  <line x1="0" y1="37.5" x2="200" y2="37.5" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                  <line v-for="(dot, i) in sparklineDots" :key="'v-'+i" :x1="dot.x" y1="0" :x2="dot.x" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+
                   <polyline
                     fill="none"
                     stroke="var(--primary)"
@@ -282,6 +291,9 @@ function cancelDelete() {
                     stroke-linejoin="round"
                     :points="sparklinePoints"
                   />
+                  <!-- Dots -->
+                  <circle v-for="(dot, i) in sparklineDots" :key="'dot-'+i"
+                          :cx="dot.x" :cy="dot.y" r="2" fill="var(--card-bg)" stroke="var(--primary)" stroke-width="1.5" />
                   <!-- Gradient fill under line -->
                   <polygon
                     fill="url(#gradient)"
@@ -319,7 +331,7 @@ function cancelDelete() {
                 <th>{{ t('auth.email') }}</th>
                 <th>Прогресс</th>
                 <th>Ср. балл</th>
-                <th>Последняя акт.</th>
+                <th>Активность</th>
                 <th>Действия</th>
               </tr>
             </thead>
@@ -342,9 +354,9 @@ function cancelDelete() {
                 </td>
                 <td class="text-secondary small">{{ formatDate(s.last_active_at) }}</td>
                 <td>
-                  <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-glass" title="Профиль">👤</button>
-                    <button class="btn btn-sm btn-outline-danger" title="Сбросить пароль">🔑</button>
+                  <div class="d-flex gap-3">
+                    <button class="btn btn-sm btn-outline-glass px-3" title="Профиль">👤</button>
+                    <button class="btn btn-sm btn-outline-danger px-3" title="Сбросить пароль">🔑</button>
                   </div>
                 </td>
               </tr>
@@ -510,7 +522,15 @@ function cancelDelete() {
                 <td class="text-secondary">{{ q.order_num || '-' }}</td>
                 <td>
                   <div style="font-weight: 500; font-size: 0.9rem; max-width: 350px;" class="text-truncate">{{ q.text_ru }}</div>
-                  <div class="small text-secondary mt-1">Вар: {{ q.variant_number || '—' }} | {{ q.difficulty }}</div>
+                  <div class="small text-secondary mt-1 d-flex align-items-center gap-2">
+                    <span>Вар: {{ q.variant_number || '—' }}</span>
+                    <span class="text-muted">|</span>
+                    <span class="d-flex align-items-center gap-1">
+                      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;" 
+                            :class="q.difficulty === 'easy' ? 'bg-success' : q.difficulty === 'medium' ? 'bg-warning' : 'bg-danger'"></span>
+                      {{ q.difficulty === 'easy' ? 'Лёгкий' : q.difficulty === 'medium' ? 'Средний' : 'Сложный' }}
+                    </span>
+                  </div>
                 </td>
                 <td>
                   <div class="small">{{ q.subject_name }}</div>
